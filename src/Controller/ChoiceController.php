@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\RandomChoice;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -9,23 +10,11 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ChoiceController extends AbstractController
 {
     #[Route('/', name: 'app_choice')]
-    public function index(): Response
+    public function index(RandomChoice $randomChoice): Response
     {
-        $rand = random_int(1,10);
-        $choice = "...";
-
-        if($rand < 5)
-        {
-            $choice = "No";
-        }else if($rand > 5) {
-            $choice = "Yes";
-        }else {
-            $choice = "Maybe";
-        }
-
         return $this->render('choice/index.html.twig', [
             'controller_name' => 'ChoiceController',
-            'choice' => $choice
+            'choice' => $randomChoice->makeChoice()
         ]);
     }
 }
